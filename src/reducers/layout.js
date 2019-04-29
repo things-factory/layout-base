@@ -2,7 +2,7 @@ import {
   APPEND_HEADERBAR,
   APPEND_NAVBAR,
   APPEND_ASIDEBAR,
-  APPEND_FOOTER,
+  APPEND_FOOTERBAR,
   APPEND_APP_TOOL,
   UPDATE_WIDTH
 } from '../actions/layout'
@@ -38,7 +38,7 @@ const layout = (state = INITIAL_STATE, action) => {
         asidebars: [...state.asidebars, asidebar]
       }
 
-    case APPEND_FOOTER:
+    case APPEND_FOOTERBAR:
       let footer = action.footer
       return {
         ...state,
