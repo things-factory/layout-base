@@ -2,6 +2,7 @@
   "name": "@things-factory/layout-base",
   "version": "0.0.7",
   "main": "src/index.js",
+  "browser": "src/index.js",
   "things-factory": true,
   "license": "MIT",
   "author": "heartyoh",
