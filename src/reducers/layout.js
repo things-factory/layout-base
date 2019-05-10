@@ -4,7 +4,8 @@ import {
   APPEND_ASIDEBAR,
   APPEND_FOOTERBAR,
   APPEND_APP_TOOL,
-  UPDATE_WIDTH
+  UPDATE_WIDTH,
+  TOGGLE_OVERLAY
 } from '../actions/layout'
 
 const INITIAL_STATE = {
@@ -12,7 +13,11 @@ const INITIAL_STATE = {
   asidebars: [],
   footers: [],
   appTools: [],
-  width: 'WIDE'
+  width: 'WIDE',
+  overlay: {
+    show: false,
+    template: ''
+  }
 }
 
 const layout = (state = INITIAL_STATE, action) => {
@@ -58,6 +63,15 @@ const layout = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         width: action.width
+      }
+
+    case TOGGLE_OVERLAY:
+      return {
+        ...state,
+        overlay: {
+          show: !state.overlay.show,
+          template: action.template
+        }
       }
 
     default:
