@@ -10,15 +10,15 @@ export default function bootstrap() {
     snackbar
   })
 
-  document.addEventListener('notify', () => {
-    let { message, type, e } = e.detail
+  document.addEventListener('notify', event => {
+    let { message, type, ex } = event.detail
 
     switch (type) {
       case 'error':
-        console.error(message, e)
+        console.error(message, ex)
         break
       case 'warn':
-        console.warn(message, e)
+        console.warn(message, ex)
         break
       default:
         break
