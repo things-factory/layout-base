@@ -10,7 +10,7 @@ export default function bootstrap() {
     snackbar
   })
 
-  document.addEventListener('notify', function(e) {
+  document.addEventListener('notify', () => {
     let { message, type, e } = e.detail
 
     switch (type) {
