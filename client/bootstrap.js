@@ -9,7 +9,21 @@ export default function bootstrap() {
     layout,
     snackbar
   })
+
   document.addEventListener('notify', function(e) {
-    store.dispatch(showSnackbar(e.detail))
+    let { message, type, e } = e.detail
+
+    switch (type) {
+      case 'error':
+        console.error(message, e)
+        break
+      case 'warn':
+        console.warn(message, e)
+        break
+      default:
+        break
+    }
+
+    store.dispatch(showSnackbar(message))
   })
 }
