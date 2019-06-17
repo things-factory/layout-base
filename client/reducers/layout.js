@@ -9,6 +9,7 @@ import {
 } from '../actions/layout'
 
 const INITIAL_STATE = {
+  headerbars: [],
   navbars: [],
   asidebars: [],
   footers: [],
