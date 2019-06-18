@@ -4,6 +4,7 @@ import {
   APPEND_ASIDEBAR,
   APPEND_FOOTERBAR,
   APPEND_APP_TOOL,
+  APPEND_CONTEXT_TOOL,
   UPDATE_WIDTH,
   TOGGLE_OVERLAY
 } from '../actions/layout'
@@ -12,8 +13,9 @@ const INITIAL_STATE = {
   headerbars: [],
   navbars: [],
   asidebars: [],
-  footers: [],
+  footerbars: [],
   appTools: [],
+  contextTools: [],
   width: 'WIDE',
   overlay: {
     show: false,
@@ -24,38 +26,39 @@ const INITIAL_STATE = {
 const layout = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case APPEND_HEADERBAR:
-      let headerbar = action.headerbar
       return {
         ...state,
-        headerbars: [...state.headerbars, headerbar]
+        headerbars: [...state.headerbars, action.headerbar]
       }
 
     case APPEND_NAVBAR:
-      let navbar = action.navbar
       return {
         ...state,
-        navbars: [...state.navbars, navbar]
+        navbars: [...state.navbars, action.navbar]
       }
 
     case APPEND_ASIDEBAR:
-      let asidebar = action.asidebar
       return {
         ...state,
-        asidebars: [...state.asidebars, asidebar]
+        asidebars: [...state.asidebars, action.asidebar]
       }
 
     case APPEND_FOOTERBAR:
-      let footer = action.footer
       return {
         ...state,
-        footers: [...state.footers, footer]
+        footerbars: [...state.footerbars, action.footerbar]
       }
 
     case APPEND_APP_TOOL:
-      let tool = action.tool
       return {
         ...state,
-        appTools: [...state.appTools, tool]
+        appTools: [...state.appTools, action.tool]
+      }
+
+    case APPEND_CONTEXT_TOOL:
+      return {
+        ...state,
+        contextTools: [...state.contextTools, action.tool]
       }
 
     case UPDATE_WIDTH:
