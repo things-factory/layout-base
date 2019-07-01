@@ -100,7 +100,7 @@ const layout = (state = INITIAL_STATE, action) => {
     case REMOVE_CONTEXT_TOOL:
       return {
         ...state,
-        contextTools: state.appTools.filter(i => i !== action.tool)
+        contextTools: state.contextTools.filter(i => i !== action.tool)
       }
 
     case UPDATE_WIDTH:
