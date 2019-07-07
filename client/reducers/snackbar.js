@@ -2,6 +2,7 @@ import { OPEN_SNACKBAR, CLOSE_SNACKBAR } from '../actions/snackbar.js'
 
 const INITIAL_STATE = {
   snackbarOpened: false,
+  level: '',
   message: ''
 }
 
@@ -11,6 +12,7 @@ const snackbar = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         snackbarOpened: true,
+        level: action.level,
         message: action.message
       }
     case CLOSE_SNACKBAR:

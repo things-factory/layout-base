@@ -11,9 +11,9 @@ export default function bootstrap() {
   })
 
   document.addEventListener('notify', event => {
-    let { message, type, ex } = event.detail
+    let { message, level, ex } = event.detail
 
-    switch (type) {
+    switch (level) {
       case 'error':
         console.error(message, ex)
         break
@@ -24,6 +24,6 @@ export default function bootstrap() {
         break
     }
 
-    store.dispatch(showSnackbar(message))
+    store.dispatch(showSnackbar(level, message))
   })
 }
