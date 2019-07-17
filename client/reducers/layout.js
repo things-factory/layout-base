@@ -9,10 +9,7 @@ import {
   REMOVE_FOOTERBAR,
   APPEND_APP_TOOL,
   REMOVE_APP_TOOL,
-  APPEND_CONTEXT_TOOL,
-  REMOVE_CONTEXT_TOOL,
-  UPDATE_WIDTH,
-  TOGGLE_OVERLAY
+  UPDATE_VIEWPORT_WIDTH
 } from '../actions/layout'
 
 const INITIAL_STATE = {
@@ -91,33 +88,12 @@ const layout = (state = INITIAL_STATE, action) => {
         appTools: state.appTools.filter(i => i !== action.tool)
       }
 
-    case APPEND_CONTEXT_TOOL:
-      return {
-        ...state,
-        contextTools: [...state.contextTools, action.tool]
-      }
-
-    case REMOVE_CONTEXT_TOOL:
-      return {
-        ...state,
-        contextTools: state.contextTools.filter(i => i !== action.tool)
-      }
-
-    case UPDATE_WIDTH:
+    case UPDATE_VIEWPORT_WIDTH:
       console.log(`The layout changed to a ${action.width} layout`)
 
       return {
         ...state,
         width: action.width
-      }
-
-    case TOGGLE_OVERLAY:
-      return {
-        ...state,
-        overlay: {
-          show: !state.overlay.show,
-          template: action.template
-        }
       }
 
     default:

@@ -8,10 +8,6 @@ export const APPEND_FOOTERBAR = 'APPEND_FOOTERBAR'
 export const REMOVE_FOOTERBAR = 'REMOVE_FOOTERBAR'
 export const APPEND_APP_TOOL = 'APPEND_APP_TOOL'
 export const REMOVE_APP_TOOL = 'REMOVE_APP_TOOL'
-export const APPEND_CONTEXT_TOOL = 'APPEND_CONTEXT_TOOL'
-export const REMOVE_CONTEXT_TOOL = 'REMOVE_CONTEXT_TOOL'
-
-export const TOGGLE_OVERLAY = 'TOGGLE_OVERLAY'
 
 export const TOOL_POSITION = {
   FRONT_END: 'FRONT_END',
@@ -21,11 +17,11 @@ export const TOOL_POSITION = {
   REAR_END: 'REAR_END'
 }
 
-export const UPDATE_WIDTH = 'UPDATE_WIDTH'
+export const UPDATE_VIEWPORT_WIDTH = 'UPDATE_VIEWPORT_WIDTH'
 
 export const updateLayout = wide => dispatch => {
   dispatch({
-    type: UPDATE_WIDTH,
+    type: UPDATE_VIEWPORT_WIDTH,
     width: wide ? 'WIDE' : 'NARROW'
   })
 }
