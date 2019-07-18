@@ -4,6 +4,8 @@ import layout from './reducers/layout'
 import snackbar from './reducers/snackbar'
 import { showSnackbar } from './actions/snackbar'
 
+import { UPDATE_OVERLAY } from './actions/layout'
+
 export default function bootstrap() {
   store.addReducers({
     layout,
@@ -38,16 +40,30 @@ export default function bootstrap() {
 
     lastHistoryState = currentState
 
+    /** TODO should be deleted */
     var overlays = store.getState().layout.overlays
 
-    var lastOverlayState = lastOverlay && overlays.find(overlay => overlay.name == lastOverlay.name)
-    var currentOverlayState = currentOverlay && overlays.find(overlay => overlay.name == currentOverlay.name)
+    var lastOverlayState = lastOverlay && overlays[lastOverlay.name]
+    var currentOverlayState = currentOverlay && overlays[currentOverlay.name]
+    /** till here */
 
-    if (lastOverlayState) {
+    if (lastOverlay) {
+      store.dispatch({
+        type: UPDATE_OVERLAY,
+        name: lastOverlay.name,
+        overide: { show: true }
+      })
+      //should be deleted
       lastOverlayState.close && lastOverlayState.close.call(this, lastOverlayState)
     }
 
-    if (currentOverlayState) {
+    if (currentOverlay) {
+      store.dispatch({
+        type: UPDATE_OVERLAY,
+        name: currentOverlay.name,
+        overide: { show: false }
+      })
+      //should be deleted
       currentOverlayState.open && currentOverlayState.open.call(this, currentOverlayState)
     }
 

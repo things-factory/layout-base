@@ -23,7 +23,7 @@ const INITIAL_STATE = {
   appTools: [],
   contextTools: [],
   width: 'WIDE',
-  overlays: []
+  overlays: {}
 }
 
 const layout = (state = INITIAL_STATE, action) => {
@@ -89,24 +89,34 @@ const layout = (state = INITIAL_STATE, action) => {
       }
 
     case REGISTER_OVERLAY:
+      state.overlays[action.name] = action.overlay
+
       return {
         ...state,
-        overlays: [...state.overlays, action.overlay]
+        overlays: {
+          ...state.overlays
+        }
       }
 
     case UNREGISTER_OVERLAY:
+      delete state.overlays[action.name]
+
       return {
         ...state,
-        overlays: state.overlays.filter(i => i !== action.overlay)
+        overlays: {
+          ...state.overlays
+        }
       }
 
     case UPDATE_OVERLAY:
-      let overlay = state.overlays.find(overlay => overlay.name == action.name)
-      overlay && overlay.assign(options)
+      let overlay = state.overlays[action.name]
+      overlay && Object.assign(overlay, action.overide)
 
       return {
         ...state,
-        overlays: [...state.overlays]
+        overlays: {
+          ...state.overlays
+        }
       }
 
     case UPDATE_VIEWPORT_WIDTH:
