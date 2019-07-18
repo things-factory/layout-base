@@ -8,8 +8,6 @@ export const APPEND_ASIDEBAR = 'APPEND_ASIDEBAR'
 export const REMOVE_ASIDEBAR = 'REMOVE_ASIDEBAR'
 export const APPEND_FOOTERBAR = 'APPEND_FOOTERBAR'
 export const REMOVE_FOOTERBAR = 'REMOVE_FOOTERBAR'
-export const APPEND_APP_TOOL = 'APPEND_APP_TOOL'
-export const REMOVE_APP_TOOL = 'REMOVE_APP_TOOL'
 
 export const REGISTER_OVERLAY = 'REGISTER_OVERLAY'
 export const UNREGISTER_OVERLAY = 'UNREGISTER_OVERLAY'
@@ -32,12 +30,11 @@ export const updateLayout = wide => dispatch => {
   })
 }
 
-/* overlay handlings */
+/* overlay navigation */
 
 export const openOverlay = (name, options) => {
   var beforeState = history.state
   var beforeOverlay = beforeState ? beforeState.overlay : undefined
-  var beforeOverlayName = beforeOverlay ? beforeOverlay.name : undefined
 
   /* store의 layout의 내용을 변경한다. */
   if (options) {
@@ -54,22 +51,15 @@ export const openOverlay = (name, options) => {
    */
   var afterState = Object.assign({}, beforeState || {}, { overlay: { name } })
 
-  // if (beforeOverlayName === name) {
-  //   /* overlay가 변하지 않았다면, 아무것도 하지 않아도 될 것 같은데.. */
-  //   // history.replaceState(afterState, '', location.href)
-  //   // window.dispatchEvent(new Event('popstate'))
-  // } else {
   if (beforeOverlay) {
     /* 이전의 overlay history state는 제거한다. */
-    delete beforeState.overlay
-    history.replaceState({ ...beforeState }, '', location.href)
-    window.dispatchEvent(new Event('popstate'))
+    history.replaceState(afterState, '', location.href)
+  } else {
+    /* 새로운 overlay history를 추가한다. history 제거는 closeOverlay에서 한다. */
+    history.pushState(afterState, '', location.href)
   }
 
-  /* 새로운 overlay history를 추가한다. history 제거는 closeOverlay에서 한다. */
-  history.pushState(afterState, '', location.href)
   window.dispatchEvent(new Event('popstate'))
-  // }
 }
 
 export const closeOverlay = () => {

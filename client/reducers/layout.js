@@ -7,8 +7,6 @@ import {
   REMOVE_ASIDEBAR,
   APPEND_FOOTERBAR,
   REMOVE_FOOTERBAR,
-  APPEND_APP_TOOL,
-  REMOVE_APP_TOOL,
   REGISTER_OVERLAY,
   UPDATE_OVERLAY,
   UNREGISTER_OVERLAY,
@@ -20,8 +18,6 @@ const INITIAL_STATE = {
   navbars: [],
   asidebars: [],
   footerbars: [],
-  appTools: [],
-  contextTools: [],
   width: 'WIDE',
   overlays: {}
 }
@@ -74,18 +70,6 @@ const layout = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         footerbars: state.footerbars.filter(i => i !== action.footerbar)
-      }
-
-    case APPEND_APP_TOOL:
-      return {
-        ...state,
-        appTools: [...state.appTools, action.tool]
-      }
-
-    case REMOVE_APP_TOOL:
-      return {
-        ...state,
-        appTools: state.appTools.filter(i => i !== action.tool)
       }
 
     case REGISTER_OVERLAY:
