@@ -35,7 +35,9 @@ export const updateLayout = wide => dispatch => {
 /* overlay handlings */
 
 export const openOverlay = (name, options) => {
-  var { name: currentOverlayName } = (history.state && history.state.overlay) || {}
+  var beforeState = history.state
+  var beforeOverlay = beforeState ? beforeState.overlay : undefined
+  var beforeOverlayName = beforeOverlay ? beforeOverlay.name : undefined
 
   /* store의 layout의 내용을 변경한다. */
   if (options) {
@@ -50,28 +52,42 @@ export const openOverlay = (name, options) => {
    * 현재 history.state를 확인하고, overlay의 이름이 같은
    * history에 추가하고 open 동작을 실행한다.
    */
-  var state = { overlay: { name } }
+  var afterState = { overlay: { name } }
 
-  if (currentOverlayName === name) {
-    history.replaceState(state, '', location.href)
+  if (beforeOverlayName === name) {
+    /* 페이지 이동없이 overlay만 변경되었다면, history를 replace한다. */
+    history.replaceState(afterState, '', location.href)
+    window.dispatchEvent(new Event('popstate'))
   } else {
-    history.pushState(state, '', location.href)
-  }
+    if (beforeOverlayName) {
+      /* 이전의 overlay history state는 제거한다. */
+      delete beforeState.overlay
+      history.replaceState(beforeState, '', location.href)
+      window.dispatchEvent(new Event('popstate'))
+    }
 
-  window.dispatchEvent(new Event('popstate'))
+    history.pushState(afterState, '', location.href)
+    window.dispatchEvent(new Event('popstate'))
+  }
 }
 
 export const closeOverlay = () => {
   /*
    * 실제로 overlay를 close하는 작업은 window.onpopstate 핸들러에서 한다.
    */
-  history.back()
+  var state = history.state
+  if (state) {
+    delete state.overlay
+  }
+
+  history.replaceState(state, '', location.href)
+  window.dispatchEvent(new Event('popstate'))
 }
 
 export const toggleOverlay = (name, options) => {
-  var { name: currentOverlayName } = (history.state && history.state.overlay) || {}
+  var { name: beforeOverlayName } = (history.state && history.state.overlay) || {}
 
-  if (currentOverlayName == name) {
+  if (beforeOverlayName == name) {
     closeOverlay(name)
   } else {
     openOverlay(name, options)

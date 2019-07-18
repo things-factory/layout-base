@@ -30,44 +30,33 @@ export default function bootstrap() {
   })
 
   /* overlay handling */
-  var lastHistoryState
+  var beforeHistoryState
 
   const historyHandler = (location, event) => {
-    var currentState = history.state
+    var afterHistoryState = history.state
 
-    var { overlay: lastOverlay } = lastHistoryState || {}
-    var { overlay: currentOverlay } = currentState || {}
+    var { overlay: beforeOverlay } = beforeHistoryState || {}
+    var { overlay: afterOverlay } = afterHistoryState || {}
 
-    lastHistoryState = currentState
-
-    /** TODO should be deleted */
-    var overlays = store.getState().layout.overlays
-
-    var lastOverlayState = lastOverlay && overlays[lastOverlay.name]
-    var currentOverlayState = currentOverlay && overlays[currentOverlay.name]
-    /** till here */
-
-    if (lastOverlay) {
-      store.dispatch({
-        type: UPDATE_OVERLAY,
-        name: lastOverlay.name,
-        overide: { show: true }
-      })
-      //should be deleted
-      lastOverlayState.close && lastOverlayState.close.call(this, lastOverlayState)
+    beforeHistoryState = {
+      ...afterHistoryState
     }
 
-    if (currentOverlay) {
+    if (beforeOverlay) {
       store.dispatch({
         type: UPDATE_OVERLAY,
-        name: currentOverlay.name,
+        name: beforeOverlay.name,
         overide: { show: false }
       })
-      //should be deleted
-      currentOverlayState.open && currentOverlayState.open.call(this, currentOverlayState)
     }
 
-    lastHistoryState = currentState
+    if (afterOverlay) {
+      store.dispatch({
+        type: UPDATE_OVERLAY,
+        name: afterOverlay.name,
+        overide: { show: true }
+      })
+    }
   }
 
   store.dispatch({
