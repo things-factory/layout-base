@@ -33,51 +33,32 @@ export const updateLayout = wide => dispatch => {
 }
 
 /* overlay handlings */
-var lastHistoryState
 
-window.onpopstate = history => {
-  var { overlay: lastOverlay } = history.state || {}
-  var { overlay: currentOverlay } = history.state || {}
-
-  var state = store.getState()
-  var overlays = state.layout.overlay
-
-  var lastState = lastOverlay && overlays.find(overlay => overlay.name == lastOverlay)
-  var currentState = currentOverlay && overlays.find(overlay => overlay.name == currentOverlay)
-
-  if (lastState) {
-    lastState.close && lastState.close.call(lastState)
-  }
-
-  if (currentState) {
-    currentState.open && currentState.open.call(currentState)
-  }
-
-  lastHistoryState = history.state
-}
-
-export const openOverlay = (overlay, options) => {
+export const openOverlay = (name, options) => {
   var { name: currentOverlayName } = (history.state && history.state.overlay) || {}
-
-  /*
-   * 현재 history.state를 확인하고, overlay의 이름이 같은
-   * history에 추가한다.
-   * 실제로 overlay를 open하는 작업은 window.onpopstate 핸들러에서 한다.
-   */
-  if (currentOverlayName === name) {
-    // history.replaceState({overlay: overla}, '', location.href)
-  } else {
-    history.pushState({ overlay }, '', location.href)
-  }
 
   /* store의 layout의 내용을 변경한다. */
   if (options) {
     store.dispatch({
       type: UPDATE_OVERLAY,
-      name: overlay,
+      name,
       overide: options
     })
   }
+
+  /*
+   * 현재 history.state를 확인하고, overlay의 이름이 같은
+   * history에 추가하고 open 동작을 실행한다.
+   */
+  var state = { overlay: { name } }
+
+  if (currentOverlayName === name) {
+    history.replaceState(state, '', location.href)
+  } else {
+    history.pushState(state, '', location.href)
+  }
+
+  window.dispatchEvent(new Event('popstate'))
 }
 
 export const closeOverlay = () => {
@@ -85,4 +66,14 @@ export const closeOverlay = () => {
    * 실제로 overlay를 close하는 작업은 window.onpopstate 핸들러에서 한다.
    */
   history.back()
+}
+
+export const toggleOverlay = (name, options) => {
+  var { name: currentOverlayName } = (history.state && history.state.overlay) || {}
+
+  if (currentOverlayName == name) {
+    closeOverlay(name)
+  } else {
+    openOverlay(name, options)
+  }
 }
