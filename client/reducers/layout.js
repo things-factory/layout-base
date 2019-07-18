@@ -9,6 +9,9 @@ import {
   REMOVE_FOOTERBAR,
   APPEND_APP_TOOL,
   REMOVE_APP_TOOL,
+  REGISTER_OVERLAY,
+  UPDATE_OVERLAY,
+  UNREGISTER_OVERLAY,
   UPDATE_VIEWPORT_WIDTH
 } from '../actions/layout'
 
@@ -86,6 +89,27 @@ const layout = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         appTools: state.appTools.filter(i => i !== action.tool)
+      }
+
+    case REGISTER_OVERLAY:
+      return {
+        ...state,
+        overlays: [...state.overlays, action.overlay]
+      }
+
+    case UNREGISTER_OVERLAY:
+      return {
+        ...state,
+        overlays: state.overlays.filter(i => i !== action.overlay)
+      }
+
+    case UPDATE_OVERLAY:
+      let overlay = state.overlays.find(overlay => overlay.name == action.name)
+      overlay && overlay.assign(options)
+
+      return {
+        ...state,
+        overlays: [...state.overlays]
       }
 
     case UPDATE_VIEWPORT_WIDTH:
