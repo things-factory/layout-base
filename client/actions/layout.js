@@ -46,11 +46,11 @@ window.onpopstate = history => {
   var currentState = currentOverlay && overlays.find(overlay => overlay.name == currentOverlay)
 
   if (lastState) {
-    lastState.close && lastState.close.call(lastOverlay)
+    lastState.close && lastState.close.call(lastState)
   }
 
   if (currentState) {
-    currentState.open && currentState.open.call(currentOverlay)
+    currentState.open && currentState.open.call(currentState)
   }
 
   lastHistoryState = history.state

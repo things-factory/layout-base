@@ -23,10 +23,7 @@ const INITIAL_STATE = {
   appTools: [],
   contextTools: [],
   width: 'WIDE',
-  overlay: {
-    show: false,
-    template: ''
-  }
+  overlays: []
 }
 
 const layout = (state = INITIAL_STATE, action) => {
