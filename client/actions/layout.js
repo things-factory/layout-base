@@ -52,36 +52,31 @@ export const openOverlay = (name, options) => {
    * 현재 history.state를 확인하고, overlay의 이름이 같은
    * history에 추가하고 open 동작을 실행한다.
    */
-  var afterState = { overlay: { name } }
+  var afterState = Object.assign({}, beforeState || {}, { overlay: { name } })
 
-  if (beforeOverlayName === name) {
-    /* 페이지 이동없이 overlay만 변경되었다면, history를 replace한다. */
-    history.replaceState(afterState, '', location.href)
-    window.dispatchEvent(new Event('popstate'))
-  } else {
-    if (beforeOverlayName) {
-      /* 이전의 overlay history state는 제거한다. */
-      delete beforeState.overlay
-      history.replaceState(beforeState, '', location.href)
-      window.dispatchEvent(new Event('popstate'))
-    }
-
-    history.pushState(afterState, '', location.href)
+  // if (beforeOverlayName === name) {
+  //   /* overlay가 변하지 않았다면, 아무것도 하지 않아도 될 것 같은데.. */
+  //   // history.replaceState(afterState, '', location.href)
+  //   // window.dispatchEvent(new Event('popstate'))
+  // } else {
+  if (beforeOverlay) {
+    /* 이전의 overlay history state는 제거한다. */
+    delete beforeState.overlay
+    history.replaceState({ ...beforeState }, '', location.href)
     window.dispatchEvent(new Event('popstate'))
   }
+
+  /* 새로운 overlay history를 추가한다. history 제거는 closeOverlay에서 한다. */
+  history.pushState(afterState, '', location.href)
+  window.dispatchEvent(new Event('popstate'))
+  // }
 }
 
 export const closeOverlay = () => {
   /*
    * 실제로 overlay를 close하는 작업은 window.onpopstate 핸들러에서 한다.
    */
-  var state = history.state
-  if (state) {
-    delete state.overlay
-  }
-
-  history.replaceState(state, '', location.href)
-  window.dispatchEvent(new Event('popstate'))
+  history.back()
 }
 
 export const toggleOverlay = (name, options) => {
