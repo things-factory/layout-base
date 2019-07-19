@@ -7,99 +7,95 @@ import {
   REMOVE_ASIDEBAR,
   APPEND_FOOTERBAR,
   REMOVE_FOOTERBAR,
-  REGISTER_OVERLAY,
-  UPDATE_OVERLAY,
-  UNREGISTER_OVERLAY,
+  UPDATE_LAYOUT_VIEWPART,
   UPDATE_VIEWPORT_WIDTH
 } from '../actions/layout'
 
 const INITIAL_STATE = {
-  headerbars: [],
-  navbars: [],
-  asidebars: [],
-  footerbars: [],
-  width: 'WIDE',
-  overlays: {}
+  viewparts: {},
+  width: 'WIDE'
 }
 
 const layout = (state = INITIAL_STATE, action) => {
+  let viewparts = { ...state.viewparts }
+
   switch (action.type) {
     case APPEND_HEADERBAR:
       return {
         ...state,
-        headerbars: [...state.headerbars, action.headerbar]
+        viewparts: {
+          ...state.viewparts,
+          [action.name]: { ...action.headerbar, type: 'headerbar' }
+        }
       }
 
     case REMOVE_HEADERBAR:
+      delete viewparts[action.name]
+
       return {
         ...state,
-        headerbars: state.headerbars.filter(i => i !== action.headerbar)
+        viewparts
       }
 
     case APPEND_NAVBAR:
       return {
         ...state,
-        navbars: [...state.navbars, action.navbar]
+        viewparts: {
+          ...state.viewparts,
+          [action.name]: { ...action.navbar, type: 'navbar' }
+        }
       }
 
     case REMOVE_NAVBAR:
+      delete viewparts[action.name]
+
       return {
         ...state,
-        navbars: state.navbars.filter(i => i !== action.navbar)
+        viewparts
       }
 
     case APPEND_ASIDEBAR:
       return {
         ...state,
-        asidebars: [...state.asidebars, action.asidebar]
+        viewparts: {
+          ...state.viewparts,
+          [action.name]: { ...action.asidebar, type: 'asidebar' }
+        }
       }
 
     case REMOVE_ASIDEBAR:
+      delete viewparts[action.name]
+
       return {
         ...state,
-        asidebars: state.asidebars.filter(i => i !== action.asidebar)
+        viewparts
       }
 
     case APPEND_FOOTERBAR:
       return {
         ...state,
-        footerbars: [...state.footerbars, action.footerbar]
+        viewparts: {
+          ...state.viewparts,
+          [action.name]: { ...action.footerbar, type: 'footerbar' }
+        }
       }
 
     case REMOVE_FOOTERBAR:
+      delete viewparts[action.name]
+
       return {
         ...state,
-        footerbars: state.footerbars.filter(i => i !== action.footerbar)
+        viewparts
       }
 
-    case REGISTER_OVERLAY:
-      state.overlays[action.name] = action.overlay
+    case UPDATE_LAYOUT_VIEWPART:
+      let viewpart = state.viewparts[action.name]
 
       return {
         ...state,
-        overlays: {
-          ...state.overlays
-        }
-      }
-
-    case UNREGISTER_OVERLAY:
-      delete state.overlays[action.name]
-
-      return {
-        ...state,
-        overlays: {
-          ...state.overlays
-        }
-      }
-
-    case UPDATE_OVERLAY:
-      let overlay = state.overlays[action.name]
-      overlay && Object.assign(overlay, action.overide)
-
-      return {
-        ...state,
-        overlays: {
-          ...state.overlays
+        viewparts: {
+          ...state.viewparts,
+          [action.name]: Object.assign({}, viewpart, action.overide)
         }
       }
 

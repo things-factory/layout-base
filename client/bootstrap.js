@@ -4,7 +4,7 @@ import layout from './reducers/layout'
 import snackbar from './reducers/snackbar'
 import { showSnackbar } from './actions/snackbar'
 
-import { UPDATE_OVERLAY } from './actions/layout'
+import { UPDATE_LAYOUT_VIEWPART } from './actions/layout'
 
 export default function bootstrap() {
   store.addReducers({
@@ -44,7 +44,7 @@ export default function bootstrap() {
 
     if (beforeOverlay) {
       store.dispatch({
-        type: UPDATE_OVERLAY,
+        type: UPDATE_LAYOUT_VIEWPART,
         name: beforeOverlay.name,
         overide: { show: false }
       })
@@ -52,7 +52,7 @@ export default function bootstrap() {
 
     if (afterOverlay) {
       store.dispatch({
-        type: UPDATE_OVERLAY,
+        type: UPDATE_LAYOUT_VIEWPART,
         name: afterOverlay.name,
         overide: { show: true }
       })

@@ -9,9 +9,7 @@ export const REMOVE_ASIDEBAR = 'REMOVE_ASIDEBAR'
 export const APPEND_FOOTERBAR = 'APPEND_FOOTERBAR'
 export const REMOVE_FOOTERBAR = 'REMOVE_FOOTERBAR'
 
-export const REGISTER_OVERLAY = 'REGISTER_OVERLAY'
-export const UNREGISTER_OVERLAY = 'UNREGISTER_OVERLAY'
-export const UPDATE_OVERLAY = 'UPDATE_OVERLAY'
+export const UPDATE_LAYOUT_VIEWPART = 'UPDATE_LAYOUT_VIEWPART'
 
 export const TOOL_POSITION = {
   FRONT_END: 'FRONT_END',
@@ -39,7 +37,7 @@ export const openOverlay = (name, options) => {
   /* store의 layout의 내용을 변경한다. */
   if (options) {
     store.dispatch({
-      type: UPDATE_OVERLAY,
+      type: UPDATE_LAYOUT_VIEWPART,
       name,
       overide: options
     })
