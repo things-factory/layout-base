@@ -45,7 +45,7 @@ export default function bootstrap() {
 
     var lastSequence = overlayStack.length > 0 ? overlayStack[overlayStack.length - 1].overlay.sequence : -1
 
-    if (sequence < lastSequence) {
+    if (overlayStack.length > 0 && sequence < lastSequence) {
       /* overlay 관련 history가 아닌 경우. */
       do {
         let { overlay } = overlayStack.pop()
@@ -57,7 +57,14 @@ export default function bootstrap() {
 
         lastSequence = overlayStack.length > 0 ? overlayStack[overlayStack.length - 1].overlay.sequence : -1
       } while (sequence < lastSequence)
-    } else {
+
+      if (overlayStack.length == 0) {
+        /* overlay가 더 이상 없으므로 ESCKey handler를 등록하고, 리턴한다. */
+        document.removeEventListener('keydown', ESCKeydownEventHandler)
+      }
+    }
+
+    if (overlay) {
       /* stack을 새로 시작하는 경우에 ESCKey handler를 등록한다. */
       if (overlayStack.length == 0) {
         document.addEventListener('keydown', ESCKeydownEventHandler)
@@ -69,11 +76,6 @@ export default function bootstrap() {
         name: overlay.name,
         overide: { show: true }
       })
-    }
-
-    if (overlayStack.length == 0) {
-      /* overlay가 더 이상 없으므로 ESCKey handler를 등록하고, 리턴한다. */
-      document.removeEventListener('keydown', ESCKeydownEventHandler)
     }
   }
 
