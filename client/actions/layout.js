@@ -84,7 +84,7 @@ export const openOverlay = (name, options) => {
   )
 }
 
-export const closeOverlay = () => {
+export const closeOverlay = name => {
   /*
    * 실제로 overlay를 close하는 작업은 window.onpopstate 핸들러에서 한다.
    */
@@ -119,7 +119,7 @@ export const openPopup = (template, options = {}) => {
     name,
     viewpart: {
       hovering: options.hovering || 'center',
-      backdrop: options.backdrop || false,
+      backdrop: true,
       show: false,
       temporary: true /* auto remove */,
       template
@@ -132,7 +132,6 @@ export const openPopup = (template, options = {}) => {
   return {
     close: () => {
       history.back()
-      removeViewpart(name)
     }
   }
 }

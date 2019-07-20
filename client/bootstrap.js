@@ -39,6 +39,8 @@ export default function bootstrap() {
   }
 
   const historyHandler = (location, event) => {
+    var navigated = event instanceof PopStateEvent
+
     var state = history.state
     var overlay = (state || {}).overlay
     var sequence = (overlay || {}).sequence || -1
@@ -64,7 +66,7 @@ export default function bootstrap() {
       }
     }
 
-    if (overlay) {
+    if (!navigated && overlay) {
       /* stack을 새로 시작하는 경우에 ESCKey handler를 등록한다. */
       if (overlayStack.length == 0) {
         document.addEventListener('keydown', ESCKeydownEventHandler)
