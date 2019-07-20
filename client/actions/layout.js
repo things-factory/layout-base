@@ -1,15 +1,32 @@
 import { store } from '@things-factory/shell'
 
-export const APPEND_HEADERBAR = 'APPEND_HEADERBAR'
-export const REMOVE_HEADERBAR = 'REMOVE_HEADERBAR'
-export const APPEND_NAVBAR = 'APPEND_NAVBAR'
-export const REMOVE_NAVBAR = 'REMOVE_NAVBAR'
-export const APPEND_ASIDEBAR = 'APPEND_ASIDEBAR'
-export const REMOVE_ASIDEBAR = 'REMOVE_ASIDEBAR'
-export const APPEND_FOOTERBAR = 'APPEND_FOOTERBAR'
-export const REMOVE_FOOTERBAR = 'REMOVE_FOOTERBAR'
+export const appendViewpart = ({ name, viewpart, position }) => {
+  store.dispatch({
+    type: APPEND_VIEWPART,
+    name,
+    viewpart,
+    position
+  })
+}
 
-export const UPDATE_LAYOUT_VIEWPART = 'UPDATE_LAYOUT_VIEWPART'
+export const removeViewpart = name => {
+  store.dispatch({
+    type: REMOVE_VIEWPART,
+    name
+  })
+}
+
+export const APPEND_VIEWPART = 'APPEND_VIEWPART'
+export const REMOVE_VIEWPART = 'REMOVE_VIEWPART'
+
+export const UPDATE_VIEWPART = 'UPDATE_VIEWPART'
+
+export const VIEWPART_POSITION = {
+  HEADERBAR: 'headerbar',
+  NAVBAR: 'navbar',
+  ASIDEBAR: 'asidebar',
+  FOOTERBAR: 'footerbar'
+}
 
 export const TOOL_POSITION = {
   FRONT_END: 'FRONT_END',
@@ -21,8 +38,8 @@ export const TOOL_POSITION = {
 
 export const UPDATE_VIEWPORT_WIDTH = 'UPDATE_VIEWPORT_WIDTH'
 
-export const updateLayout = wide => dispatch => {
-  dispatch({
+export const updateLayout = wide => {
+  store.dispatch({
     type: UPDATE_VIEWPORT_WIDTH,
     width: wide ? 'WIDE' : 'NARROW'
   })
@@ -37,7 +54,7 @@ export const openOverlay = (name, options) => {
   /* store의 layout의 내용을 변경한다. */
   if (options) {
     store.dispatch({
-      type: UPDATE_LAYOUT_VIEWPART,
+      type: UPDATE_VIEWPART,
       name,
       overide: options
     })
@@ -57,7 +74,11 @@ export const openOverlay = (name, options) => {
     history.pushState(afterState, '', location.href)
   }
 
-  window.dispatchEvent(new Event('popstate'))
+  window.dispatchEvent(
+    new CustomEvent('popstate', {
+      detail: { state: afterState }
+    })
+  )
 }
 
 export const closeOverlay = () => {

@@ -1,15 +1,4 @@
-import {
-  APPEND_HEADERBAR,
-  REMOVE_HEADERBAR,
-  APPEND_NAVBAR,
-  REMOVE_NAVBAR,
-  APPEND_ASIDEBAR,
-  REMOVE_ASIDEBAR,
-  APPEND_FOOTERBAR,
-  REMOVE_FOOTERBAR,
-  UPDATE_LAYOUT_VIEWPART,
-  UPDATE_VIEWPORT_WIDTH
-} from '../actions/layout'
+import { APPEND_VIEWPART, REMOVE_VIEWPART, UPDATE_VIEWPART, UPDATE_VIEWPORT_WIDTH } from '../actions/layout'
 
 const INITIAL_STATE = {
   viewparts: {},
@@ -20,75 +9,26 @@ const layout = (state = INITIAL_STATE, action) => {
   let viewparts = { ...state.viewparts }
 
   switch (action.type) {
-    case APPEND_HEADERBAR:
+    case APPEND_VIEWPART:
       return {
         ...state,
         viewparts: {
           ...state.viewparts,
-          [action.name]: { ...action.headerbar, type: 'headerbar' }
+          [action.name]: {
+            ...action.viewpart,
+            position: action.position
+          }
         }
       }
 
-    case REMOVE_HEADERBAR:
+    case REMOVE_VIEWPART:
       delete viewparts[action.name]
-
       return {
         ...state,
         viewparts
       }
 
-    case APPEND_NAVBAR:
-      return {
-        ...state,
-        viewparts: {
-          ...state.viewparts,
-          [action.name]: { ...action.navbar, type: 'navbar' }
-        }
-      }
-
-    case REMOVE_NAVBAR:
-      delete viewparts[action.name]
-
-      return {
-        ...state,
-        viewparts
-      }
-
-    case APPEND_ASIDEBAR:
-      return {
-        ...state,
-        viewparts: {
-          ...state.viewparts,
-          [action.name]: { ...action.asidebar, type: 'asidebar' }
-        }
-      }
-
-    case REMOVE_ASIDEBAR:
-      delete viewparts[action.name]
-
-      return {
-        ...state,
-        viewparts
-      }
-
-    case APPEND_FOOTERBAR:
-      return {
-        ...state,
-        viewparts: {
-          ...state.viewparts,
-          [action.name]: { ...action.footerbar, type: 'footerbar' }
-        }
-      }
-
-    case REMOVE_FOOTERBAR:
-      delete viewparts[action.name]
-
-      return {
-        ...state,
-        viewparts
-      }
-
-    case UPDATE_LAYOUT_VIEWPART:
+    case UPDATE_VIEWPART:
       let viewpart = state.viewparts[action.name]
 
       return {
