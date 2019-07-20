@@ -29,13 +29,26 @@ const layout = (state = INITIAL_STATE, action) => {
       }
 
     case UPDATE_VIEWPART:
-      let viewpart = state.viewparts[action.name]
+      let viewpart = viewparts[action.name]
+      if (!viewpart) {
+        return state
+      }
+      let overide = action.overide || {}
 
-      return {
-        ...state,
-        viewparts: {
-          ...state.viewparts,
-          [action.name]: Object.assign({}, viewpart, action.overide)
+      if (viewpart.temporary && overide.show === false) {
+        /* temporary viewpart는 show=false가 될 때, 제거되어야 한다. */
+        delete viewparts[action.name]
+        return {
+          ...state,
+          viewparts
+        }
+      } else {
+        return {
+          ...state,
+          viewparts: {
+            ...state.viewparts,
+            [action.name]: Object.assign({}, viewpart, action.overide)
+          }
         }
       }
 

@@ -30,7 +30,7 @@ export default function bootstrap() {
   })
 
   /* overlay handling */
-  var beforeHistoryState
+  var overlayStack = []
 
   const ESCKeydownEventHandler = event => {
     if (event.keyCode == 27 /* KEY_ESC */) {
@@ -39,40 +39,41 @@ export default function bootstrap() {
   }
 
   const historyHandler = (location, event) => {
-    var afterHistoryState = history.state
+    var state = history.state
+    var overlay = (state || {}).overlay
+    var sequence = (overlay || {}).sequence || -1
 
-    var { overlay: beforeOverlay } = beforeHistoryState || {}
-    var { overlay: afterOverlay } = afterHistoryState || {}
+    var lastSequence = overlayStack.length > 0 ? overlayStack[overlayStack.length - 1].overlay.sequence : -1
 
-    beforeHistoryState = {
-      ...history.state
-    }
+    if (sequence < lastSequence) {
+      /* overlay 관련 history가 아닌 경우. */
+      do {
+        let { overlay } = overlayStack.pop()
+        store.dispatch({
+          type: UPDATE_VIEWPART,
+          name: overlay.name,
+          overide: { show: false }
+        })
 
-    /* 기존의 overlay는 hide 시킨다. */
-    if (beforeOverlay) {
-      document.removeEventListener('keydown', ESCKeydownEventHandler)
+        lastSequence = overlayStack.length > 0 ? overlayStack[overlayStack.length - 1].overlay.sequence : -1
+      } while (sequence < lastSequence)
+    } else {
+      /* stack을 새로 시작하는 경우에 ESCKey handler를 등록한다. */
+      if (overlayStack.length == 0) {
+        document.addEventListener('keydown', ESCKeydownEventHandler)
+      }
+      overlayStack.push({ ...state })
 
       store.dispatch({
         type: UPDATE_VIEWPART,
-        name: beforeOverlay.name,
-        overide: { show: false }
-      })
-    }
-
-    /*
-     * 새로 open된 overlay는 show 시킨다.
-     *
-     * 단, 브라우저의 navigation bar에서 prev, next로 이동한 경우는 제외한다.)
-     * 즉, popstate 이벤트를 강제로 발생시킨 경우에만 실행하는데, 이벤트가 PopStateEvent 인지를 기준으로 판단한다.
-     */
-    if (!(event instanceof PopStateEvent) && afterOverlay && afterOverlay.name) {
-      store.dispatch({
-        type: UPDATE_VIEWPART,
-        name: afterOverlay.name,
+        name: overlay.name,
         overide: { show: true }
       })
+    }
 
-      document.addEventListener('keydown', ESCKeydownEventHandler)
+    if (overlayStack.length == 0) {
+      /* overlay가 더 이상 없으므로 ESCKey handler를 등록하고, 리턴한다. */
+      document.removeEventListener('keydown', ESCKeydownEventHandler)
     }
   }
 
