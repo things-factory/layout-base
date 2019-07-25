@@ -54,7 +54,7 @@ export default function bootstrap() {
         store.dispatch({
           type: UPDATE_VIEWPART,
           name: overlay.name,
-          overide: { show: false }
+          override: { show: false }
         })
 
         lastSequence = overlayStack.length > 0 ? overlayStack[overlayStack.length - 1].overlay.sequence : -1
@@ -76,7 +76,7 @@ export default function bootstrap() {
       store.dispatch({
         type: UPDATE_VIEWPART,
         name: overlay.name,
-        overide: { show: true }
+        override: { show: true }
       })
     }
   }

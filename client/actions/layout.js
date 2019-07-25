@@ -65,7 +65,7 @@ export const openOverlay = (name, options) => {
     store.dispatch({
       type: UPDATE_VIEWPART,
       name,
-      overide: options
+      override: options
     })
   }
 

@@ -33,9 +33,9 @@ const layout = (state = INITIAL_STATE, action) => {
       if (!viewpart) {
         return state
       }
-      let overide = action.overide || {}
+      let override = action.override || {}
 
-      if (viewpart.temporary && overide.show === false) {
+      if (viewpart.temporary && override.show === false) {
         /* temporary viewpart는 show=false가 될 때, 제거되어야 한다. */
         delete viewparts[action.name]
         return {
@@ -47,7 +47,7 @@ const layout = (state = INITIAL_STATE, action) => {
           ...state,
           viewparts: {
             ...state.viewparts,
-            [action.name]: Object.assign({}, viewpart, action.overide)
+            [action.name]: Object.assign({}, viewpart, action.override)
           }
         }
       }
