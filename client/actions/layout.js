@@ -130,6 +130,7 @@ export const openPopup = (template, options = {}) => {
   openOverlay(name)
 
   return {
+    name,
     close: () => {
       history.back()
     }
