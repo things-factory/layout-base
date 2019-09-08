@@ -61,7 +61,7 @@ export default function bootstrap() {
       } while (sequence < lastSequence)
 
       if (overlayStack.length == 0) {
-        /* overlay가 더 이상 없으므로 ESCKey handler를 등록하고, 리턴한다. */
+        /* overlay가 더 이상 없으므로 ESCKey handler를 해제하고, 리턴한다. */
         document.removeEventListener('keydown', ESCKeydownEventHandler)
       }
     }

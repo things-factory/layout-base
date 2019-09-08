@@ -118,7 +118,8 @@ export const openPopup = (template, options = {}) => {
   appendViewpart({
     name,
     viewpart: {
-      hovering: options.hovering || 'center',
+      hovering: 'center',
+      ...options,
       backdrop: true,
       show: false,
       temporary: true /* auto remove */,
@@ -129,10 +130,26 @@ export const openPopup = (template, options = {}) => {
 
   openOverlay(name)
 
-  return {
+  var popup = {
     name,
     close: () => {
-      history.back()
-    }
+      /* 현재 overlay state를 확인해서, 자신인 경우에 history.back() 한다. */
+      var state = history.state
+      var overlay = (state || {}).overlay
+
+      overlay && overlay.name == name && history.back()
+    },
+    closed: false,
+    onclosed: null
   }
+
+  document.addEventListener('overlay-closed', function listener(e) {
+    if (name == e.detail) {
+      popup.closed = true
+      popup.onclosed && popup.onclosed()
+      document.removeEventListener('overlay-closed', listener)
+    }
+  })
+
+  return popup
 }
