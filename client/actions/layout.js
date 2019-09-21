@@ -52,13 +52,13 @@ export const updateLayout = wide => {
 }
 
 /* overlay navigation */
-var sequence = 0
+var overlaySequence = 0
 
 export const openOverlay = (name, options) => {
   var beforeState = history.state
   var beforeOverlay = beforeState ? beforeState.overlay : undefined
-  var beforeSequence = !beforeOverlay || beforeOverlay.sequence === undefined ? sequence : beforeOverlay.sequence
-  var afterSequence = (sequence = beforeSequence + 1)
+  var beforeSequence = !beforeOverlay || beforeOverlay.sequence === undefined ? overlaySequence : beforeOverlay.sequence
+  var afterSequence = (overlaySequence = beforeSequence + 1)
 
   /* store의 layout의 내용을 변경한다. */
   if (options) {
@@ -106,14 +106,14 @@ export const toggleOverlay = (name, options) => {
  *
  * popup은 overlay의 특별한 형태이다.
  * popup은 open될 때, viewpart를 append 하며, close 될 때 viewpart를 remove 한다.
- * - name: '$popup-${sequence}'
+ * - name: '$popup-${popupSequence}'
  * - position: VIEWPART_POSITION_HEADERBAR
  * - hovering: 'center' | 'next'
  */
-var sequence = 0
+var popupSequence = 0
 
 export const openPopup = (template, options = {}) => {
-  var name = `$popup-${sequence++}`
+  var name = `$popup-${popupSequence++}`
 
   appendViewpart({
     name,
