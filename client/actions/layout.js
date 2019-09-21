@@ -115,10 +115,15 @@ var sequence = 0
 export const openPopup = (template, options = {}) => {
   var name = `$popup-${sequence++}`
 
+  var popupTemplate = html`
+    <popup-window> </popup-window>
+  `
+
   appendViewpart({
     name,
     viewpart: {
       hovering: 'center',
+      closable: true,
       ...options,
       backdrop: true,
       show: false,
