@@ -23,6 +23,14 @@ export const removeViewpart = name => {
   })
 }
 
+export const updateViewpart = (name, override) => {
+  store.dispatch({
+    type: UPDATE_VIEWPART,
+    name,
+    override
+  })
+}
+
 export const APPEND_VIEWPART = 'APPEND_VIEWPART'
 export const REMOVE_VIEWPART = 'REMOVE_VIEWPART'
 export const UPDATE_VIEWPART = 'UPDATE_VIEWPART'
