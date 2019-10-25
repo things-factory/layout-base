@@ -3,12 +3,14 @@ export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR'
 
 var snackbarTimer
 
-export const showSnackbar = (level, message) => dispatch => {
+export const showSnackbar = (level, { message, action, timer = 3000 }) => dispatch => {
   dispatch({
     type: OPEN_SNACKBAR,
     level,
-    message
+    message,
+    action
   })
   window.clearTimeout(snackbarTimer)
-  snackbarTimer = window.setTimeout(() => dispatch({ type: CLOSE_SNACKBAR }), 3000)
+
+  if (timer != -1) snackbarTimer = window.setTimeout(() => dispatch({ type: CLOSE_SNACKBAR }), timer)
 }

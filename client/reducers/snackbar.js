@@ -3,7 +3,8 @@ import { OPEN_SNACKBAR, CLOSE_SNACKBAR } from '../actions/snackbar.js'
 const INITIAL_STATE = {
   snackbarOpened: false,
   level: '',
-  message: ''
+  message: '',
+  action: {}
 }
 
 const snackbar = (state = INITIAL_STATE, action) => {
@@ -13,7 +14,10 @@ const snackbar = (state = INITIAL_STATE, action) => {
         ...state,
         snackbarOpened: true,
         level: action.level,
-        message: action.message
+        message: action.message,
+        action: {
+          ...action.action
+        }
       }
     case CLOSE_SNACKBAR:
       return {
