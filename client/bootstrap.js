@@ -4,12 +4,33 @@ import layout from './reducers/layout'
 import snackbar from './reducers/snackbar'
 import { showSnackbar } from './actions/snackbar'
 
-import { UPDATE_VIEWPART } from './actions/layout'
+import { UPDATE_VIEWPART, openPopup, openOverlay, closeOverlay, toggleOverlay } from './actions/layout'
 
 export default function bootstrap() {
   store.addReducers({
     layout,
     snackbar
+  })
+
+  document.addEventListener('open-overlay', event => {
+    const { name, options } = event.detail
+    openOverlay(name, options)
+  })
+
+  document.addEventListener('close-overlay', event => {
+    const { name } = event.detail
+    closeOverlay(name)
+  })
+
+  document.addEventListener('toggle-overlay', event => {
+    const { name, options } = event.detail
+    toggleOverlay(name, options)
+  })
+
+  document.addEventListener('open-popup', event => {
+    const { template, options, callback } = event.detail
+    var popup = openPopup(template, options)
+    if (popup && callback) callback(popup)
   })
 
   document.addEventListener('notify', event => {
