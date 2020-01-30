@@ -34,7 +34,7 @@ export default function bootstrap() {
   })
 
   document.addEventListener('notify', event => {
-    let { message, level, ex, option = {} } = event.detail
+    let { message, level, ex = '', option = {} } = event.detail
 
     switch (level) {
       case 'error':
@@ -44,7 +44,7 @@ export default function bootstrap() {
         console.warn(message, ex)
         break
       case 'info':
-        console.info(message, ex)
+        console.info(message)
         break
       default:
         break
