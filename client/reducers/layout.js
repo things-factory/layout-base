@@ -47,7 +47,10 @@ const layout = (state = INITIAL_STATE, action) => {
           ...state,
           viewparts: {
             ...state.viewparts,
-            [action.name]: Object.assign({}, viewpart, action.override)
+            [action.name]: {
+              ...viewpart,
+              ...action.override
+            }
           }
         }
       }

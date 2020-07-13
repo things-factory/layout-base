@@ -42,6 +42,18 @@ export const VIEWPART_POSITION = {
   FOOTERBAR: 'footerbar'
 }
 
+/**
+ * 각 뷰파트 스택의 순서를 정하는 속성이다.
+ * 뷰파트의 level 속성에 정의되도록 한다.
+ * 맨 위/아래/좌측/우측에 보여져야하는 뷰파트는 TOPMOST 속성을 갖도록 하고,
+ * 쌓인 순서대로 보여지는 뷰파트는 NORMAL 속성을 갖도록 한다.
+ * default 속성은 NORMAL이다.
+ */
+export const VIEWPART_LEVEL = {
+  TOPMOST: 'TOPMOST',
+  NORMAL: 'NORMAL'
+}
+
 export const TOOL_POSITION = {
   FRONT_END: 'FRONT_END',
   FRONT: 'FRONT',
