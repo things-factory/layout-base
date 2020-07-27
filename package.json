@@ -22,8 +22,9 @@
     "migration:run": "node ./node_modules/typeorm/cli.js migration:run",
     "migration:revert": "node ./node_modules/typeorm/cli.js migration:revert"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {
     "@things-factory/shell": "^2.0.0"
-  },
-  "devDependencies": {}
+  }
 }
