@@ -74,14 +74,14 @@ export const updateLayout = wide => {
 /* overlay navigation */
 var overlaySequence = 0
 
-export const openOverlay = (name, options) => {
+export const openOverlay = (name, options, silent) => {
   var beforeState = history.state
   var beforeOverlay = beforeState ? beforeState.overlay : undefined
   var beforeSequence = !beforeOverlay || beforeOverlay.sequence === undefined ? overlaySequence : beforeOverlay.sequence
   var afterSequence = (overlaySequence = beforeSequence + 1)
 
   /* store의 layout의 내용을 변경한다. */
-  if (options) {
+  if (!silent && options) {
     store.dispatch({
       type: UPDATE_VIEWPART,
       name,
@@ -93,7 +93,9 @@ export const openOverlay = (name, options) => {
    * 현재 history.state를 확인하고, overlay의 이름이 같은
    * history에 추가하고 open 동작을 실행한다.
    */
-  var afterState = Object.assign({}, beforeState || {}, { overlay: { name, sequence: afterSequence } })
+  var afterState = Object.assign({}, beforeState || {}, {
+    overlay: { name, sequence: afterSequence, escapable: options?.escapable !== false }
+  })
 
   history.pushState(afterState, '', location.href)
 
@@ -149,7 +151,7 @@ export const openPopup = (template, options = {}) => {
     position: VIEWPART_POSITION.HEADERBAR
   })
 
-  openOverlay(name)
+  openOverlay(name, options, true)
 
   var popup = {
     name,

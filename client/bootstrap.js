@@ -60,21 +60,24 @@ export default function bootstrap() {
 
   /* overlay handling */
   var overlayStack = []
-
-  const ESCKeydownEventHandler = event => {
-    if (event.keyCode == 27 /* KEY_ESC */) {
-      history.back()
-    }
+  function getLastSequence() {
+    return overlayStack.length > 0 ? overlayStack[overlayStack.length - 1].overlay.sequence : -1
   }
+
+  document.addEventListener('keydown', event => {
+    if (overlayStack.length > 0 && event.keyCode == 27 /* KEY_ESC */) {
+      history.state?.overlay?.escapable && history.back()
+    }
+  })
 
   const historyHandler = (location, event) => {
     var navigated = event instanceof PopStateEvent
 
     var state = history.state
-    var overlay = (state || {}).overlay
-    var sequence = (overlay || {}).sequence || -1
+    var overlay = state?.overlay
+    var sequence = overlay?.sequence || -1
 
-    var lastSequence = overlayStack.length > 0 ? overlayStack[overlayStack.length - 1].overlay.sequence : -1
+    var lastSequence = getLastSequence()
 
     if (overlayStack.length > 0 && sequence < lastSequence) {
       /* overlay 관련 history가 아닌 경우. */
@@ -86,20 +89,11 @@ export default function bootstrap() {
           override: { show: false }
         })
 
-        lastSequence = overlayStack.length > 0 ? overlayStack[overlayStack.length - 1].overlay.sequence : -1
+        lastSequence = getLastSequence()
       } while (sequence < lastSequence)
-
-      if (overlayStack.length == 0) {
-        /* overlay가 더 이상 없으므로 ESCKey handler를 해제하고, 리턴한다. */
-        document.removeEventListener('keydown', ESCKeydownEventHandler)
-      }
     }
 
     if (!navigated && overlay) {
-      /* stack을 새로 시작하는 경우에 ESCKey handler를 등록한다. */
-      if (overlayStack.length == 0) {
-        document.addEventListener('keydown', ESCKeydownEventHandler)
-      }
       overlayStack.push({ ...state })
 
       store.dispatch({
